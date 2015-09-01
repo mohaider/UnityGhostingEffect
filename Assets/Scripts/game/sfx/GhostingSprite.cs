@@ -56,7 +56,7 @@ namespace Assets.Scripts.game.sfx
 
         }
 
-        public void Init(float dissapearTimer, float startingAlpha, Sprite sprite, int sortingId, Transform referencedTransform, Vector3 offset)
+        public void Init(float dissapearTimer, float startingAlpha, Sprite sprite, int sortingId, int sortingOrder, Transform referencedTransform, Vector3 offset)
         {
             _startingAlpha = startingAlpha;
               Color color = SpriteRenderer.color;
@@ -65,6 +65,7 @@ namespace Assets.Scripts.game.sfx
 
             _dissapearTimer = dissapearTimer;
             SpriteRenderer.sortingLayerID = sortingId;
+			SpriteRenderer.sortingOrder = sortingOrder;
             _sprite = sprite;
             SpriteRenderer.sprite = sprite;
 
@@ -82,7 +83,7 @@ namespace Assets.Scripts.game.sfx
             StartCoroutine(StartDissapearing(false));
         }
 
-        public void InitSkeletonGhostShader(float dissapearTimer, float startingAlpha, Sprite sprite, int sortingId,
+		public void InitSkeletonGhostShader(float dissapearTimer, float startingAlpha,int sortingOrder, Sprite sprite, int sortingId,
             Transform referencedTransform, Vector3 offset, Color desiredColor)
         {
             startingAlpha = startingAlpha;
@@ -95,6 +96,7 @@ namespace Assets.Scripts.game.sfx
             SpriteRenderer.color = desiredColor;
             _dissapearTimer = dissapearTimer;
             SpriteRenderer.sortingLayerID = sortingId;
+			SpriteRenderer.sortingOrder = sortingOrder;
             _sprite = sprite;
             SpriteRenderer.sprite = sprite;
 

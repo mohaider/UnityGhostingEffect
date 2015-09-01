@@ -99,7 +99,8 @@ namespace Assets.Scripts.game.sfx
             _refSpriteRenderer = refSpriteRenderer;
            // StartCoroutine(GhostEffect());
             _nextSpawnTime = Time.time + _spawnRate;
-            
+			_sortingLayer = _refSpriteRenderer.sortingLayerID;
+			 
             _hasStarted = true;
           }
         /// <summary>
@@ -116,7 +117,7 @@ namespace Assets.Scripts.game.sfx
             _spawnRate = spawnRate;
             _effectDuration = effectDuration;
             _refSpriteRenderer = refSpriteRenderer;
- 
+			_sortingLayer = _refSpriteRenderer.sortingLayerID;
             _nextSpawnTime = Time.time + _spawnRate;
 
             _hasStarted = true;
@@ -150,7 +151,7 @@ namespace Assets.Scripts.game.sfx
                             GhostingSpritesQueue.Dequeue();
                             GhostingSpritesQueue.Enqueue(peekedGhostingSprite);
                             //initialize the ghosting sprite
-                            peekedGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer, transform, Vector3.zero);
+							peekedGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero);
                             _nextSpawnTime += _spawnRate; 
                         }
                         else //not ok, wait until next frame to try again
@@ -163,7 +164,7 @@ namespace Assets.Scripts.game.sfx
                     { 
                         GhostingSprite newGhostingSprite = Get();
                         GhostingSpritesQueue.Enqueue(newGhostingSprite); //queue it up!
-                        newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer, transform, Vector3.zero );
+						newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero );
                         _nextSpawnTime += _spawnRate; 
 
                     }
