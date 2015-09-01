@@ -83,7 +83,7 @@ namespace Assets.Scripts.game.sfx
 
 
         /// <summary>
-        /// Initializes and starts the ghosting effect with the given params. 
+        /// Initializes and starts the ghosting effect with the given params but with an option to tint. Please note that the effect duration no longer has an effect on the object in question.  
         /// </summary>
         /// <param name="maxNumberOfGhosts"></param>
         /// <param name="spawnRate"></param>
@@ -96,16 +96,17 @@ namespace Assets.Scripts.game.sfx
             _trailLength = maxNumberOfGhosts;
            // _spacing = spacing;
             _spawnRate=spawnRate;
-            _effectDuration = effectDuration;
+            //_effectDuration = effectDuration;
+			_effectDuration = maxNumberOfGhosts * spawnRate * 0.95f; //5% variance
             _refSpriteRenderer = refSpriteRenderer;
-           // StartCoroutine(GhostEffect());
+        
             _nextSpawnTime = Time.time + _spawnRate;
 			_sortingLayer = _refSpriteRenderer.sortingLayerID; 
             _hasStarted = true;
 			useTint = true;
           }
         /// <summary>
-        /// Initializes and starts the ghosting effect with the given params. 
+		/// Initializes and starts the ghosting effect with the given params. Please note that the effect duration no longer has an effect on the object in question.
         /// </summary>
         /// <param name="maxNumberOfGhosts"></param>
         /// <param name="spawnRate"></param>
@@ -114,9 +115,9 @@ namespace Assets.Scripts.game.sfx
         public void Init(int maxNumberOfGhosts, float spawnRate, SpriteRenderer refSpriteRenderer, float effectDuration )
         { 
             _trailLength = maxNumberOfGhosts;
-            // _spacing = spacing;
-            _spawnRate = spawnRate;
-            _effectDuration = effectDuration;
+            _spawnRate = spawnRate; 
+		//	_effectDuration = effectDuration;
+			_effectDuration = maxNumberOfGhosts * spawnRate * 0.95f; //5% variance
             _refSpriteRenderer = refSpriteRenderer;
 			_sortingLayer = _refSpriteRenderer.sortingLayerID;
             _nextSpawnTime = Time.time + _spawnRate;
@@ -151,6 +152,7 @@ namespace Assets.Scripts.game.sfx
                             //pop the queue
                             GhostingSpritesQueue.Dequeue();
                             GhostingSpritesQueue.Enqueue(peekedGhostingSprite);
+
                             //initialize the ghosting sprite
 							if(!useTint)
 							{
@@ -164,6 +166,7 @@ namespace Assets.Scripts.game.sfx
                         }
                         else //not ok, wait until next frame to try again
                         { 
+							//peekedGhostingSprite.KillAnimationAndSpeedUpDissapearing();
                             return;
                         }
                     }

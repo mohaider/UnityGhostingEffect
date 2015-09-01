@@ -21,8 +21,8 @@ namespace Assets.Scripts.game.sfx
 
         private bool _hasBeenInitiated;
         private bool _canBeReused;
-
-
+		private IEnumerator _startDissapearing; //reference to the routine in case it needs to be stopped
+		private bool _useTint;
 
         public Material GhostMaterial
         {
@@ -79,8 +79,9 @@ namespace Assets.Scripts.game.sfx
             _hasBeenInitiated = true;
 
             gameObject.SetActive(true);
-
-            StartCoroutine(StartDissapearing(false));
+			_useTint = false;
+			_startDissapearing = StartDissapearing (_useTint);
+			StartCoroutine(_startDissapearing);
         }
 
 		public void Init(float dissapearTimer, float startingAlpha, Sprite sprite,int sortingId ,int  sortingOrder   ,
@@ -110,8 +111,9 @@ namespace Assets.Scripts.game.sfx
             _hasBeenInitiated = true;
 
             gameObject.SetActive(true);
-
-            StartCoroutine(StartDissapearing(true));
+			_useTint = true;
+			_startDissapearing = StartDissapearing (_useTint);
+			StartCoroutine(_startDissapearing);
         }
 
         public Color _desiredColor;
@@ -129,7 +131,7 @@ namespace Assets.Scripts.game.sfx
             }
         }
 
-  
+	
         /// <summary>
         /// From the class field, dissapear timer, slowly disspear the sprite renderer . Pass in a bool to use the provided ghost shader which 
         /// behaves 
@@ -159,10 +161,17 @@ namespace Assets.Scripts.game.sfx
                 float percentComplete = timeSinceLerpStart / _dissapearTimer; 
                 if (percentComplete >= 1)
                 {
-                    finishedLerping = true;
-				
-					
-                     
+                    finishedLerping = true; 
+					if (!changeColor)
+					{ 
+						color.a = 0;
+						GhostMaterial.color = color; 
+					}
+					else
+					{  
+						GhostMaterial.SetColor("_Color", blackWithZeroAlpha); 
+                    }
+                    
                 }
                 if (!changeColor)
                 {
@@ -185,5 +194,24 @@ namespace Assets.Scripts.game.sfx
             _hasBeenInitiated = false;
         }
 
-    }
+//		public void KillAnimationAndSpeedUpDissapearing()
+//		{
+//			StopCoroutine (_startDissapearing);
+//			if (!_useTint)
+//			{
+//				Color color =  SpriteRenderer.color; 
+//				color.a = 0;
+//				GhostMaterial.color = color;  
+//			}
+//			else
+//			{ 
+//				Color newColor = Color.Lerp(startColor,blackWithZeroAlpha,percentComplete);
+//				GhostMaterial.SetColor("_Color", newColor); 
+//            }
+//            
+//            _dissapearTimer /= 4f;
+//            _startDissapearing = StartDissapearing (_useTint);
+//            StartCoroutine(_startDissapearing);
+//    	}
+}
 }
