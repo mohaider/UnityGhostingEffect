@@ -13,6 +13,7 @@ public class testingGhosting : MonoBehaviour
     public float EffectDuration;  //how long does the effect last for? 
     public float SpawnRate; //How fast do new ghosts spawn?
     public int MaxGhosts;//the maximum number of ghosts in any given time. 
+	private Animator _animator;
 	#endregion 
 
 	public float Speed; //speed of the player object. 
@@ -22,6 +23,9 @@ public class testingGhosting : MonoBehaviour
         _gcContainer = GetComponent<GhostingContainer>();
         _srSpriteRenderer = GetComponent<SpriteRenderer>();
         _originalpos = transform.position;
+		_animator = GetComponent<Animator> ();
+		_animator.SetBool ("Ground", true);
+		_animator.SetFloat ("Speed",0.2f);
     }
 
 

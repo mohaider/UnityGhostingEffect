@@ -116,7 +116,7 @@ namespace Assets.Scripts.game.sfx
             _spawnRate = spawnRate;
             _effectDuration = effectDuration;
             _refSpriteRenderer = refSpriteRenderer;
-            // StartCoroutine(GhostEffect());
+ 
             _nextSpawnTime = Time.time + _spawnRate;
 
             _hasStarted = true;
