@@ -1,18 +1,22 @@
 ﻿using UnityEngine; 
 using Assets.Scripts.game.sfx;
 
+
+/// <summary>
+/// This script should be attached to a target object with a sprite renderer. 
+/// </summary>
 public class testingGhosting : MonoBehaviour
 {
-
-    private GhostingContainer _gcContainer;
-
+	#region ghosting effec fields
+    private GhostingContainer _gcContainer; 
     private SpriteRenderer _srSpriteRenderer;
-    public float EffectDuration; 
-    public float Speed;
-    public float SpawnRate;
-    public int MaxGhosts;
-   // public int Spacing;
-    private Vector3 _originalpos; 
+    public float EffectDuration;  //how long does the effect last for? 
+    public float SpawnRate; //How fast do new ghosts spawn?
+    public int MaxGhosts;//the maximum number of ghosts in any given time. 
+	#endregion 
+
+	public float Speed; //speed of the player object. 
+    private Vector3 _originalpos; //the original position of the player
     void Start()
     {
         _gcContainer = GetComponent<GhostingContainer>();
@@ -24,8 +28,9 @@ public class testingGhosting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		 
         if (Input.GetKeyDown(KeyCode.F1))
-            _gcContainer.Init(MaxGhosts, SpawnRate, _srSpriteRenderer, EffectDuration );
+            _gcContainer.Init(MaxGhosts, SpawnRate, _srSpriteRenderer, EffectDuration ); //initiate the ghosting routine
         if (Input.GetKeyDown(KeyCode.F2))
             _gcContainer.StopEffect();
         if (Input.GetKeyDown(KeyCode.F3))
