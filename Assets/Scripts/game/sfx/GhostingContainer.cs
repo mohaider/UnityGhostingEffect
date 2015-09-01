@@ -35,6 +35,7 @@ namespace Assets.Scripts.game.sfx
         //public Shader GhostShader;
         [SerializeField] private Color _desiredColor;
         private GameObject _ghostSpritesParent;
+		private bool useTint;
         /// <summary>
         /// Average ms per frame
         /// </summary>
@@ -99,9 +100,9 @@ namespace Assets.Scripts.game.sfx
             _refSpriteRenderer = refSpriteRenderer;
            // StartCoroutine(GhostEffect());
             _nextSpawnTime = Time.time + _spawnRate;
-			_sortingLayer = _refSpriteRenderer.sortingLayerID;
-			 
+			_sortingLayer = _refSpriteRenderer.sortingLayerID; 
             _hasStarted = true;
+			useTint = true;
           }
         /// <summary>
         /// Initializes and starts the ghosting effect with the given params. 
@@ -119,7 +120,7 @@ namespace Assets.Scripts.game.sfx
             _refSpriteRenderer = refSpriteRenderer;
 			_sortingLayer = _refSpriteRenderer.sortingLayerID;
             _nextSpawnTime = Time.time + _spawnRate;
-
+			useTint = false;
             _hasStarted = true;
         }
         /// <summary>
@@ -151,7 +152,14 @@ namespace Assets.Scripts.game.sfx
                             GhostingSpritesQueue.Dequeue();
                             GhostingSpritesQueue.Enqueue(peekedGhostingSprite);
                             //initialize the ghosting sprite
+							if(!useTint)
+							{
 							peekedGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero);
+							}
+							else
+							{
+								peekedGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero,_desiredColor);
+							}
                             _nextSpawnTime += _spawnRate; 
                         }
                         else //not ok, wait until next frame to try again
@@ -164,7 +172,16 @@ namespace Assets.Scripts.game.sfx
                     { 
                         GhostingSprite newGhostingSprite = Get();
                         GhostingSpritesQueue.Enqueue(newGhostingSprite); //queue it up!
-						newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero );
+						//newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero );
+                        
+						if(!useTint)
+						{
+							newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero);
+						}
+						else
+						{
+							newGhostingSprite.Init(_effectDuration, _desiredAlpha, _refSpriteRenderer.sprite, _sortingLayer,_refSpriteRenderer.sortingOrder-1, transform, Vector3.zero,_desiredColor);
+                        }
                         _nextSpawnTime += _spawnRate; 
 
                     }

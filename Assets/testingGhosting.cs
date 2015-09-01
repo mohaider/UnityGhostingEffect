@@ -8,6 +8,7 @@ using Assets.Scripts.game.sfx;
 public class testingGhosting : MonoBehaviour
 {
 	#region ghosting effec fields
+	public Color GhostTintColor;
     private GhostingContainer _gcContainer; 
     private SpriteRenderer _srSpriteRenderer;
     public float EffectDuration;  //how long does the effect last for? 
@@ -34,7 +35,7 @@ public class testingGhosting : MonoBehaviour
     {
 		 
         if (Input.GetKeyDown(KeyCode.F1))
-            _gcContainer.Init(MaxGhosts, SpawnRate, _srSpriteRenderer, EffectDuration ); //initiate the ghosting routine
+            _gcContainer.Init(MaxGhosts, SpawnRate, _srSpriteRenderer, EffectDuration,GhostTintColor ); //initiate the ghosting routine
         if (Input.GetKeyDown(KeyCode.F2))
             _gcContainer.StopEffect();
         if (Input.GetKeyDown(KeyCode.F3))

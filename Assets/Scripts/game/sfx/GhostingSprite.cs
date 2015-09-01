@@ -83,7 +83,7 @@ namespace Assets.Scripts.game.sfx
             StartCoroutine(StartDissapearing(false));
         }
 
-		public void InitSkeletonGhostShader(float dissapearTimer, float startingAlpha,int sortingOrder, Sprite sprite, int sortingId,
+		public void Init(float dissapearTimer, float startingAlpha, Sprite sprite,int sortingId ,int  sortingOrder   ,
             Transform referencedTransform, Vector3 offset, Color desiredColor)
         {
             startingAlpha = startingAlpha;
@@ -91,8 +91,9 @@ namespace Assets.Scripts.game.sfx
                 color.a = _startingAlpha;
                 SpriteRenderer.color = color;*/
             _desiredColor = desiredColor;
-            GhostMaterial.SetColor("_Color", desiredColor);
-
+			_desiredColor.a = _startingAlpha;
+			GhostMaterial.SetColor("_Color", _desiredColor);
+            
             SpriteRenderer.color = desiredColor;
             _dissapearTimer = dissapearTimer;
             SpriteRenderer.sortingLayerID = sortingId;
@@ -139,6 +140,9 @@ namespace Assets.Scripts.game.sfx
             bool finishedLerping = false;
             float startLerpTime = Time.time;
             Color color = SpriteRenderer.color;
+			Color blackWithZeroAlpha = Color.black;
+			Color startColor = GhostMaterial.color;
+			blackWithZeroAlpha.a = 0;
             if (!changeColor)
             {
                 GhostMaterial.shader = Shader.Find("Sprites/Default");
@@ -146,30 +150,31 @@ namespace Assets.Scripts.game.sfx
             else
             {
                 GhostMaterial.shader = Shader.Find("Spine/SkeletonGhost");
+				GhostMaterial.SetFloat("_TextureFade",0.25f);
+				 
             }
             while (!finishedLerping)
             {
                 float timeSinceLerpStart = Time.time - startLerpTime;
-                float percentComplete = timeSinceLerpStart / _dissapearTimer;
-
-                // percentComplete = percentComplete*percentComplete;
-                float newAlphaValue = Mathf.Lerp(_startingAlpha, 0, percentComplete);
-                color.a = newAlphaValue;
+                float percentComplete = timeSinceLerpStart / _dissapearTimer; 
                 if (percentComplete >= 1)
                 {
                     finishedLerping = true;
+				
+					
                      
                 }
                 if (!changeColor)
                 {
-
+					float newAlphaValue = Mathf.Lerp(_startingAlpha, 0, percentComplete);
+					color.a = newAlphaValue;
                     GhostMaterial.color = color; 
 
                 }
                 else
-                {
-                    GhostMaterial.SetFloat("_TextureFade", newAlphaValue);
-                    GhostMaterial.color = color; 
+                { 
+					Color newColor = Color.Lerp(startColor,blackWithZeroAlpha,percentComplete);
+					GhostMaterial.SetColor("_Color", newColor); 
                 }
                 
                 yield return null;
