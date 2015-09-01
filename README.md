@@ -10,9 +10,9 @@ Download the files and open the project in Unity or place them in your own proje
 1. The maximum number of ghosts, of course the more you want the bigger the hit on game performance
 2. Spawning rate: the rate at which the "ghosts" spawn behind your target
 3. The sprite renderer of the target in question.
-4. The duration of the effect: how long do you want the effect to last for?
+4. ~~The duration of the effect: how long do you want the effect to last for?~~ **No longer in use because I had to change the algorithm. This was causing problems as the effect wasn't lining up properly with the number of ghosts on screen but again. I'm not removing this parameter as some people are still using this function and don't want to break their code. I appologize for the inconvienience. **
 5. (Optional ) pass in a color parameter to set the ghosts to a different color. 
-Frankly, I didn't like this effect too much and only implemented this functionality after I found a shader that changed the sprite's color. I might remove this sometime.
+ 
 
 
 ## Contributing
